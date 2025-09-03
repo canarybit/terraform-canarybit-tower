@@ -14,7 +14,7 @@ provider "google" {}
 //  Confidential VM (CVM)
 // =====================
 module "confidential-vm" {
-  source = "git@github.com:canarybit/tower-standard//gcp?ref=main"
+  source = "git@github.com:canarybit/tower//gcp?ref=main"
 
   cvm_name = "my-confidential-vm"
   cvm_cloud_init = "../../commons/cloud-init.yml"
