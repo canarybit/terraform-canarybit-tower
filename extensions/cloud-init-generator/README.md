@@ -1,5 +1,7 @@
 # Cloud-init Generator
 
+Generate a cloud-init.yml file extending the standard Confidential VM configuration with CanaryBit Remote Attestation service (Inspector).
+
 ## Requirements
 
 - `jq` installed
