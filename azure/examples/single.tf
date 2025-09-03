@@ -16,7 +16,7 @@ provider "azurerm" {
 //  Confidential VM (CVM)
 // =====================
 module "confidential-vm" {
-  source = "git@github.com:canarybit/tower-standard//azure?ref=main"
+  source = "git@github.com:canarybit/tower//azure?ref=main"
 
   az_resource_group_name = "my-resource-group"
   
