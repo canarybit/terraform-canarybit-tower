@@ -19,7 +19,7 @@ $ curl -fsSL https://canarybit-public-binaries.s3.eu-west-1.amazonaws.com/cb-cl
 #### Windows
   
 ```
-curl -fsSL https://canarybit-public-binaries.s3.eu-west-1.amazonaws.com/cb-cli/0.1.0/cb-x86_64-unknown-linux-gnu -o cb; chmod +x cb
+curl -fsSL https://canarybit-public-binaries.s3.eu-west-1.amazonaws.com/cb-cli/0.1.0/cb-x86_64-pc-windows-msvc.exe -o cb; chmod +x cb
 ```
   
 #### MacOS
