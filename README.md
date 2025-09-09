@@ -13,7 +13,10 @@ to your workloads runtime.
 - ⚖️ **No lock-in**: Support for multiple hardware platforms and virtualisation software.
 - 🔬 **Attestation verification support**: Integrates with [Inspector](https://www.canarybit.eu/confidential-cloud-inspector/) 
 to support remote attestation of deployed confidential VMs. Contact hi@canarybit.eu to learn more about CanaryBit's solution for remote attestation of confidential VMs.
-- 🧩 **Integration with Galaxy**: Support for the [Galaxy project](https://github.com/galaxyproject) for data-intensive computation.
+
+## 🧩 Integrations
+- **Galaxy server**: Support for the [Galaxy project](https://github.com/galaxyproject) for data-intensive computation.
+- **Write your own**: Simple to crate new integrations using the [cloud-init-generator](https://github.com/canarybit/tower/tree/main/extensions/cloud-init-generator)
 
 ## 🛠️ How It Works
 1. **Clone** the repository to get the configurations.
@@ -61,10 +64,3 @@ Currently Tower supports the following virtualisation plaftorms:
 - [VMware vSphere 9.0](https://www.vmware.com/products/cloud-infrastructure/vsphere)
 
 Reach out to [hi@canarybit.eu](mailto:hi@canarybit.eu) if you want to use Tower to deploy confidential VMs in on-prem deployments (that requires the Premium version).
-
->🇪🇺 This work has been partially supported by the [TITAN project](https://elasticproject.eu/), 
-> which received funding from the [Horizon Europe: Research infrastructures](https://rea.ec.europa.eu/funding-and-grants/horizon-europe-research-infrastructures_en)
-> (INFRAEOSC) programme  under the European Union’s [Horizon Europe](https://research-and-innovation.ec.europa.eu/funding/funding-opportunities/funding-programmes-and-open-calls/horizon-europe_en) 
-> research and innovation programme under [Grant Agreement No. 101129822](https://cordis.europa.eu/project/id/101129822). 
-> Views and opinions expressed are however those of the author(s) only and do not necessarily reflect those of the European Union. 
-> Neither the European Union nor the granting authority can be held responsible for them.
