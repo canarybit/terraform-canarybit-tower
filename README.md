@@ -42,7 +42,7 @@ For setup instructions, API references, and usage examples, see the documentatio
 [with minimum overhead](https://www.canarybit.eu/research-and-technological-leadership/).
 
 ## 💪 Contributing
-Contributions are welcome! Please check the [CONTRIBUTING.md](#) for details on how to get started.
+Contributions are welcome! Please check the [CONTRIBUTING.md](CONTRIBUTING.md) for details on how to get started.
 
 ## 📑 License
 Tower is licensed under the **Apache-2.0 License**. See the [LICENSE](LICENSE) file for more details.
