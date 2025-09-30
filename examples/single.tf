@@ -1,6 +1,7 @@
 terraform {
   required_version = ">= 1.0"
   required_providers {
+    // Use only the required provider
     aws = {
       source  = "hashicorp/aws"
       version = "~> 5.5"
@@ -15,7 +16,8 @@ terraform {
     }
   }
 }
-
+  
+// Use only the required provider
 provider "aws" {}
 provider "azurerm" {
   features { } 
@@ -35,10 +37,11 @@ variable "cb_login" {
 //  Confidential VM (CVM)
 // =====================
 module "confidential-vm" {
-  source = "canarybit/tower/canarybit/<SUB_MODULE>" // <SUB_MODULE> = aws,azure,gcp
+  source = "canarybit/tower/canarybit/<SUB_MODULE>" // <SUB_MODULE>: aws, azure, gcp
   cb_auth = var.cb_login
   
-  az_resource_group_name = "<RESOURCE_GROUP_NAME>" // Only for Azure deployments
+  // Azure deployments only, remove otherwise!
+  az_resource_group_name = "<RESOURCE_GROUP_NAME>" 
 
   // Confidential VM
   cvm_name = "demo-cvm"
