@@ -2,19 +2,36 @@
 // REQUIRED
 ///////////////////////
 
+variable "cb_auth" {
+  description = ""
+  type = string
+}
+
 variable "cvm_name" {
   description = ""
   type = string
 }
 
-variable "cvm_cloud_init" {
-  description = ""
-  type = string 
+variable "cvm_ssh_pubkey" { 
+  description = "Path to the public key used for SSH connection"
+  type = string
 }
 
 ///////////////////////
 // DEFAULT
 ///////////////////////
+
+variable "remote_attestation" {
+  description = "Enable CanaryBit Inspector Remote Attestation"
+  type = object({
+    cc_environments = string
+    cbinspector_url = optional(string, "https://inspector.confidentialcloud.io")
+    cbclient_version = optional(string, "0.2.2")
+    cbcli_version = optional(string, "0.2.0")
+    signing_key = optional(string)
+  })
+  default = null
+}
 
 variable "cvm_size" {
   description = <<EOT
@@ -35,6 +52,12 @@ variable "cvm_os" {
   description = "AMI of the OS image"
   type = string
   default = "ami-09040d770ffe2224f" // Canonical, Ubuntu, 24.04 LTS, amd64 noble image build on 2024-04-23
+}
+
+variable "cvm_username" {
+  description = ""
+  type = string
+  default = "tower"
 }
 
 variable "cvm_disk_size_gb" {

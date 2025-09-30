@@ -1,11 +1,11 @@
 #cloud-config
 users:
   - default
-  - name: <USERNAME>
+  - name: ${USERNAME}
     sudo: false
     shell: /bin/bash
     ssh_authorized_keys:
-      - <YOUR_SSH_RSA_KEY>
+      - ${SSH_PUBKEY}
 
 timezone: UTC
 locale: "en_US.UTF-8"
