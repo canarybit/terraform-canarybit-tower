@@ -17,6 +17,20 @@ variable "cvm_ssh_pubkey" {
   type = string
 }
 
+variable "cvm_size" {
+  description = <<EOT
+    Supported sizes are:
+      - AMD SNP: M6a, C6a, R6a
+      - Intel TDX: M7i, M7i-flex
+    EOT
+  type = string
+
+  validation {
+    condition = length(regex("(^((m6a|c6a|r6a|m7i|m7i^-flex)))(\\.)([a-z0-9]+)", var.cvm_size)) > 0
+    error_message = "Supported sizes are M6a, C6a, R6a for AMD SNP and nd M7i, M7i-flex for Intel TDX"
+  }
+}
+
 ///////////////////////
 // DEFAULT
 ///////////////////////
@@ -31,21 +45,6 @@ variable "remote_attestation" {
     signing_key = optional(string)
   })
   default = null
-}
-
-variable "cvm_size" {
-  description = <<EOT
-    Supported sizes are:
-      - AMD SNP: M6a, C6a, R6a
-      - Intel TDX: M7i, M7i-flex
-  EOT
-  type = string
-  default = "c6a.xlarge"
-
-  validation {
-    condition = length(regex("(^((m6a|c6a|r6a|m7i|m7i^-flex)))(\\.)([a-z0-9]+)", var.cvm_size)) > 0
-    error_message = "Supported sizes are M6a, C6a, R6a for AMD SNP and nd M7i, M7i-flex for Intel TDX"
-  }
 }
 
 variable "cvm_os" {

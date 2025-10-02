@@ -42,10 +42,8 @@ variable "remote_attestation" {
 variable "cvm_size" {
   description = "Supported sizes are `Standard_DC*` or `Standard_EC*` series"
   type = string
-  default = "Standard_DC2as_v5"
 
   validation {
-    # Check if it's a supported size
     condition = length(regexall("^Standard_[D,E]C+", var.cvm_size)) > 0
     error_message = "Valid values are Standard_DC* or Standard_EC* series"
   }

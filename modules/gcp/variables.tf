@@ -20,6 +20,7 @@ variable "cvm_ssh_pubkey" {
 variable "cvm_size" {
   description = "Supported VM sizes: N2D for AMD SNP or C3 for Intel"
   type = string
+  
   validation {
     condition = length(regexall("^[n2d,c3]+", var.cvm_size)) > 0
     error_message = "ERROR - Invalid VM size"
