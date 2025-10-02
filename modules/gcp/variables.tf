@@ -2,37 +2,44 @@
 // REQUIRED
 ///////////////////////
 
+variable "cb_auth" {
+  description = ""
+  type = string
+}
+
 variable "cvm_name" {
   description = ""
   type = string
 }
 
-variable "cvm_cloud_init" {
-  description = ""
+variable "cvm_ssh_pubkey" { 
+  description = "Path to the public key used for SSH connection"
   type = string
+}
+
+variable "cvm_size" {
+  description = "Supported VM sizes: N2D for AMD SNP or C3 for Intel"
+  type = string
+  validation {
+    condition = length(regexall("^[n2d,c3]+", var.cvm_size)) > 0
+    error_message = "ERROR - Invalid VM size"
+  }
 }
 
 ///////////////////////
 // DEFAULT
 ///////////////////////
 
-variable "cvm_size" {
-  // Official Docs: https://cloud.google.com/confidential-computing/confidential-vm/docs/supported-configurations
-  description = "Supported sizes are N2D for AMD SNP or C3-standard for Intel TDX"
-  type = string
-  default = "n2d-standard-2"
-
-  validation {
-    condition = length(regexall("^[n2d,c3-standard]+", var.cvm_size)) > 0
-    error_message = "Valid values are n2d-* or c3-standard-* series"
-  }
-}
-
-variable "cvm_cpu_platform" {
-  // All CPU platforms here: https://cloud.google.com/compute/docs/instances/specify-min-cpu-platform
-  description = "Supported CPU Platforms are ['AMD Milan','AMD Genoa'] for AMD SNP and ['sapphirerapids'] for Intel TDX"
-  type = string
-  default = "AMD Milan"
+variable "remote_attestation" {
+  description = "Enable CanaryBit Inspector Remote Attestation"
+  type = object({
+    cc_environments = string
+    cbinspector_url = optional(string, "https://inspector.confidentialcloud.io")
+    cbclient_version = optional(string, "0.2.2")
+    cbcli_version = optional(string, "0.2.0")
+    signing_key = optional(string)
+  })
+  default = null
 }
 
 variable "cvm_os" {
@@ -41,10 +48,16 @@ variable "cvm_os" {
   default = "ubuntu-2404-lts-amd64"
 }
 
+variable "cvm_username" {
+  description = ""
+  type = string
+  default = "tower"
+}
+
 variable "cvm_disk_size_gb" {
   description = ""
   type = string
-  default = "30"
+  default = "0"
 }
 
 variable "cvm_ports_open" {

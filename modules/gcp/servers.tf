@@ -16,8 +16,26 @@ resource "google_compute_instance" "cvm" {
   }
 
   metadata = {
-    // Attention: it's user-data with "-" and not "_" 
-    user-data = file(var.cvm_cloud_init)
+    // WARNING: it's user-data with "-" and not "_" as for other providers. No base64encode encoding.
+    user-data = var.remote_attestation != null ? templatefile("${path.module}/../../cloud-init/remote-attestation.yml",
+        {
+          USERNAME           = var.cvm_username
+          SSH_PUBKEY         = file(var.cvm_ssh_pubkey)
+          // CanaryBit Remote Attestation required info
+          CB_TOKENS          = var.cb_auth
+          CBINSPECTOR_URL    = var.remote_attestation.cbinspector_url
+          CBCLIENT_V         = var.remote_attestation.cbclient_version
+          CBCLI_V            = var.remote_attestation.cbcli_version
+          CC_ENVIRONMENTS    = var.remote_attestation.cc_environments
+          // Indent the signing key otherwise cloud-init will fail
+          SIGNING_KEY        = indent(6,tls_private_key.rsa-4096.private_key_pem_pkcs8)
+        }
+      ) : templatefile("${path.module}/../../cloud-init/default.yml",
+        {
+          USERNAME           = var.cvm_username
+          SSH_PUBKEY         = file(var.cvm_ssh_pubkey)
+        }
+    )
   }
 
   shielded_instance_config {
@@ -28,11 +46,8 @@ resource "google_compute_instance" "cvm" {
 
   allow_stopping_for_update = false
 
-  min_cpu_platform = var.cvm_cpu_platform
-
   confidential_instance_config {
-      enable_confidential_compute = true
-      confidential_instance_type = strcontains(var.cvm_cpu_platform, "AMD") ? "SEV_SNP" : "TDX"
+    confidential_instance_type = [for k,l in local.cvm_size_cpu_type_map : k if anytrue([for v in l : startswith(var.cvm_size,v)])][0]
   }
 
   scheduling {

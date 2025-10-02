@@ -8,9 +8,21 @@ output "cvm-info" {
   Disk:           0 GB
   PublicIp:       ${google_compute_instance.cvm.network_interface.0.access_config.0.nat_ip}
   SshEnabled:     ${var.cvm_ssh_enabled}
+  Username:       ${var.cvm_username}
 
   Secure Boot:    ${google_compute_instance.cvm.shielded_instance_config.0.enable_secure_boot}
   vTPM:           ${google_compute_instance.cvm.shielded_instance_config.0.enable_vtpm}
+
+  EnclaveID / Signing Key Fingerprint:
+    ${data.local_file.signing-key-fingerprint.content}
+
+  EOF
+}
+
+output "cloud-init" {
+  value = <<EOF
+  
+  ${google_compute_instance.cvm.metadata_fingerprint}
 
   EOF
 }
