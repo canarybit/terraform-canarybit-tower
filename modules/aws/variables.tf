@@ -22,7 +22,7 @@ variable "cvm_size" {
     Supported sizes are:
       - AMD SNP: M6a, C6a, R6a
       - Intel TDX: M7i, M7i-flex
-    EOT
+  EOT
   type = string
 
   validation {
