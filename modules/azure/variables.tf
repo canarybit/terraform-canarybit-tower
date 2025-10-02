@@ -2,19 +2,12 @@
 // REQUIRED
 ///////////////////////
 
-variable "cvm_name" {
+variable "cb_auth" {
   description = ""
   type = string
 }
 
-variable "cvm_cloud_init" {
-  description = ""
-  type = string  
-}
-
-// Azure specific
-
-variable "az_resource_group_name" {
+variable "cvm_name" {
   description = ""
   type = string
 }
@@ -24,17 +17,33 @@ variable "cvm_ssh_pubkey" {
   type = string
 }
 
+// Azure specific
+variable "az_resource_group_name" {
+  description = ""
+  type = string
+}
+
 ///////////////////////
 // DEFAULT
 ///////////////////////
 
+variable "remote_attestation" {
+  description = "Enable CanaryBit Inspector Remote Attestation"
+  type = object({
+    cc_environments = string
+    cbinspector_url = optional(string, "https://inspector.confidentialcloud.io")
+    cbclient_version = optional(string, "0.2.2")
+    cbcli_version = optional(string, "0.2.0")
+    signing_key = optional(string)
+  })
+  default = null
+}
+
 variable "cvm_size" {
   description = "Supported sizes are `Standard_DC*` or `Standard_EC*` series"
   type = string
-  default = "Standard_DC2as_v5"
 
   validation {
-    # Check if it's a supported size
     condition = length(regexall("^Standard_[D,E]C+", var.cvm_size)) > 0
     error_message = "Valid values are Standard_DC* or Standard_EC* series"
   }
