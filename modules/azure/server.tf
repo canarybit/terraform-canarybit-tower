@@ -5,12 +5,7 @@ resource "azurerm_linux_virtual_machine" "cvm" {
   size = var.cvm_size
     
   // Select the right cloud-init: default or with Remote Attestation support.
-  user_data = var.remote_attestation == false ? base64encode(templatefile("${path.module}/../cloud-init/default.yml",
-      {
-        USERNAME           = var.cvm_username
-        SSH_PUBKEY         = file(var.cvm_ssh_pubkey)
-      }
-    )) : base64encode(templatefile("${path.module}/../cloud-init/remote-attestation.yml",
+  user_data = var.remote_attestation != null ? base64encode(templatefile("${path.module}/../../cloud-init/remote-attestation.yml",
       {
         USERNAME           = var.cvm_username
         SSH_PUBKEY         = file(var.cvm_ssh_pubkey)
@@ -23,7 +18,13 @@ resource "azurerm_linux_virtual_machine" "cvm" {
         // Indent the signing key otherwise cloud-init will fail
         SIGNING_KEY        = indent(6,tls_private_key.rsa-4096.private_key_pem_pkcs8)
       }
-  ))
+    )) : base64encode(templatefile("${path.module}/../../cloud-init/default.yml",
+      {
+        USERNAME           = var.cvm_username
+        SSH_PUBKEY         = file(var.cvm_ssh_pubkey)
+      }
+    )
+  )
 
   # The required AZ approach to add a VM user in addition to cloud-init config
   admin_username = var.cvm_username

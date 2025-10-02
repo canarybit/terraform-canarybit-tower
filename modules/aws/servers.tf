@@ -10,13 +10,8 @@ resource "aws_instance" "cvm" {
   ami = var.cvm_os
   instance_type = var.cvm_size
 
-  // Select the right cloud-init: default or with Remote Attestation support.
-  user_data = var.remote_attestation == false ? base64encode(templatefile("${path.module}/../cloud-init/default.yml",
-      {
-        USERNAME           = var.cvm_username
-        SSH_PUBKEY         = file(var.cvm_ssh_pubkey)
-      }
-    )) : base64encode(templatefile("${path.module}/../cloud-init/remote-attestation.yml",
+  // Select the right cloud-init: with Remote Attestation support or default.
+  user_data = var.remote_attestation != null ? base64encode(templatefile("${path.module}/../../cloud-init/remote-attestation.yml",
       {
         USERNAME           = var.cvm_username
         SSH_PUBKEY         = file(var.cvm_ssh_pubkey)
@@ -29,7 +24,13 @@ resource "aws_instance" "cvm" {
         // Indent the signing key otherwise cloud-init will fail
         SIGNING_KEY        = indent(6,tls_private_key.rsa-4096.private_key_pem_pkcs8)
       }
-  ))
+    )) : base64encode(templatefile("${path.module}/../../cloud-init/default.yml",
+      {
+        USERNAME           = var.cvm_username
+        SSH_PUBKEY         = file(var.cvm_ssh_pubkey)
+      }
+    )
+  )
 
   vpc_security_group_ids = [aws_security_group.default.id]
   associate_public_ip_address = true
