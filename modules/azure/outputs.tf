@@ -23,6 +23,7 @@ output "cvm-info" {
 }
 
 output "cloud-init" {
+  description = "The cloud-init configuration of the running CVM instance(s)"
   value = <<EOF
   
   ${azurerm_linux_virtual_machine.cvm.user_data}
