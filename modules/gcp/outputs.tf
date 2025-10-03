@@ -20,6 +20,7 @@ output "cvm-info" {
 }
 
 output "cloud-init" {
+  description = "The cloud-init configuration of the running CVM instance(s)"
   value = <<EOF
   
   ${google_compute_instance.cvm.metadata_fingerprint}

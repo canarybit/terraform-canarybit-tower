@@ -17,6 +17,7 @@ output "cvm-info" {
 }
 
 output "cloud-init" {
+  description = "The cloud-init configuration of the running CVM instance(s)"
   value = <<EOF
   
   ${aws_instance.cvm.user_data}
