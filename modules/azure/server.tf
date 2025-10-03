@@ -1,7 +1,7 @@
 resource "azurerm_linux_virtual_machine" "cvm" {
   name = var.cvm_name
   resource_group_name = data.azurerm_resource_group.default.name
-  location = var.az_region
+  location = local.az_region
   size = var.cvm_size
     
   // Select the right cloud-init: default or with Remote Attestation support.

@@ -22,14 +22,15 @@ variable "az_resource_group_name" {
   type = string
 }
 
-variable "az_region" {
-  description = "Azure Region with AMD SNP or Intel TDX hardware"
-  type = string
-}
-
 ///////////////////////
 // DEFAULT
 ///////////////////////
+
+variable "az_region" {
+  description = "Azure Region. Defaults to the AZ Resource Group location."
+  type = string
+  default = null
+}
 
 variable "remote_attestation" {
   description = "Enable CanaryBit Inspector Remote Attestation"

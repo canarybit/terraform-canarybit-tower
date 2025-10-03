@@ -1,6 +1,6 @@
 resource "azurerm_network_security_group" "default" {
   name = var.cvm_name
-  location = var.az_region
+  location = local.az_region
   resource_group_name = data.azurerm_resource_group.default.name
 }
 
