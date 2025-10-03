@@ -82,6 +82,6 @@ No modules.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_cloud-init"></a> [cloud-init](#output\_cloud-init) | n/a |
+| <a name="output_cloud-init"></a> [cloud-init](#output\_cloud-init) | The cloud-init configuration of the running CVM instance(s) |
 | <a name="output_cvm-info"></a> [cvm-info](#output\_cvm-info) | Details of the running CVM instance(s) |
 <!-- END_TF_DOCS -->
