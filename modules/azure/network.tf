@@ -1,7 +1,7 @@
 resource "azurerm_virtual_network" "default" {
   name = var.cvm_name
   resource_group_name = data.azurerm_resource_group.default.name
-  location = data.azurerm_resource_group.default.location
+  location = var.az_region
   address_space = ["10.0.0.0/16"]
 }
 
@@ -15,13 +15,13 @@ resource "azurerm_subnet" "default" {
 resource "azurerm_public_ip" "default" {
   name = var.cvm_name
   resource_group_name = data.azurerm_resource_group.default.name
-  location = data.azurerm_resource_group.default.location
+  location = var.az_region
   allocation_method = "Static"
 }
 
 resource "azurerm_network_interface" "default" {
   name = var.cvm_name
-  location = data.azurerm_resource_group.default.location
+  location = var.az_region
   resource_group_name = data.azurerm_resource_group.default.name
 
   ip_configuration {

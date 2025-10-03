@@ -3,12 +3,12 @@
 ///////////////////////
 
 variable "cb_auth" {
-  description = ""
+  description = "CanaryBit Authentication tokens"
   type = string
 }
 
 variable "cvm_name" {
-  description = ""
+  description = "Confidential VM name"
   type = string
 }
 
@@ -17,9 +17,13 @@ variable "cvm_ssh_pubkey" {
   type = string
 }
 
-// Azure specific
 variable "az_resource_group_name" {
-  description = ""
+  description = "Azure Resource Group Name"
+  type = string
+}
+
+variable "az_region" {
+  description = "Azure Region with AMD SNP or Intel TDX hardware"
   type = string
 }
 
@@ -56,25 +60,25 @@ variable "cvm_os" {
 }
 
 variable "cvm_username" {
-  description = ""
+  description = "CVM Username for SSH login"
   type = string
   default = "tower"
 }
 
 variable "cvm_disk_size_gb" {
-  description = ""
+  description = "CVM Disk size"
   type = string
   default = "30"
 }
 
 variable "cvm_ports_open" {
-  description = ""
+  description = "List of CVM open network ports"
   type = list(string)
   default = []
 }
 
 variable "cvm_ssh_enabled" {
-  description = ""
+  description = "Enable/Disable SSH login"
   type = bool
   default = null
 }

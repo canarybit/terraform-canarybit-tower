@@ -53,7 +53,7 @@ Currently, Tower supports the following platforms and public cloud providers:
 | Cloud Platform          | AMD SEV-SNP | Intel TDX   |
 |-------------------------| ----------- |------------ |
 | [AWS](/modules/aws)     | yes         | upcoming    |
-| [Azure](/modules/azure) | yes         | upcoming    |
+| [Azure](/modules/azure) | yes         | yes         |
 | [GCP](/modules/gcp)     | yes         | yes         |
 
 ### 💎 Premium
