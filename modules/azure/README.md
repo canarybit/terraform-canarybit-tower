@@ -65,16 +65,17 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_az_resource_group_name"></a> [az\_resource\_group\_name](#input\_az\_resource\_group\_name) | Azure specific | `string` | n/a | yes |
-| <a name="input_cb_auth"></a> [cb\_auth](#input\_cb\_auth) | n/a | `string` | n/a | yes |
-| <a name="input_cvm_disk_size_gb"></a> [cvm\_disk\_size\_gb](#input\_cvm\_disk\_size\_gb) | n/a | `string` | `"30"` | no |
-| <a name="input_cvm_name"></a> [cvm\_name](#input\_cvm\_name) | n/a | `string` | n/a | yes |
+| <a name="input_az_region"></a> [az\_region](#input\_az\_region) | Azure Region with AMD SNP or Intel TDX hardware | `string` | n/a | yes |
+| <a name="input_az_resource_group_name"></a> [az\_resource\_group\_name](#input\_az\_resource\_group\_name) | Azure Resource Group Name | `string` | n/a | yes |
+| <a name="input_cb_auth"></a> [cb\_auth](#input\_cb\_auth) | CanaryBit Authentication tokens | `string` | n/a | yes |
+| <a name="input_cvm_disk_size_gb"></a> [cvm\_disk\_size\_gb](#input\_cvm\_disk\_size\_gb) | CVM Disk size | `string` | `"30"` | no |
+| <a name="input_cvm_name"></a> [cvm\_name](#input\_cvm\_name) | Confidential VM name | `string` | n/a | yes |
 | <a name="input_cvm_os"></a> [cvm\_os](#input\_cvm\_os) | URN of the OS image | `string` | `"canonical:ubuntu-24_04-lts:cvm:latest"` | no |
-| <a name="input_cvm_ports_open"></a> [cvm\_ports\_open](#input\_cvm\_ports\_open) | n/a | `list(string)` | `[]` | no |
+| <a name="input_cvm_ports_open"></a> [cvm\_ports\_open](#input\_cvm\_ports\_open) | List of CVM open network ports | `list(string)` | `[]` | no |
 | <a name="input_cvm_size"></a> [cvm\_size](#input\_cvm\_size) | Supported sizes are `Standard_DC*` or `Standard_EC*` series | `string` | n/a | yes |
-| <a name="input_cvm_ssh_enabled"></a> [cvm\_ssh\_enabled](#input\_cvm\_ssh\_enabled) | n/a | `bool` | `null` | no |
+| <a name="input_cvm_ssh_enabled"></a> [cvm\_ssh\_enabled](#input\_cvm\_ssh\_enabled) | Enable/Disable SSH login | `bool` | `null` | no |
 | <a name="input_cvm_ssh_pubkey"></a> [cvm\_ssh\_pubkey](#input\_cvm\_ssh\_pubkey) | Path to the public key used for SSH connection | `string` | n/a | yes |
-| <a name="input_cvm_username"></a> [cvm\_username](#input\_cvm\_username) | n/a | `string` | `"tower"` | no |
+| <a name="input_cvm_username"></a> [cvm\_username](#input\_cvm\_username) | CVM Username for SSH login | `string` | `"tower"` | no |
 | <a name="input_remote_attestation"></a> [remote\_attestation](#input\_remote\_attestation) | Enable CanaryBit Inspector Remote Attestation | <pre>object({<br/>    cc_environments = string<br/>    cbinspector_url = optional(string, "https://inspector.confidentialcloud.io")<br/>    cbclient_version = optional(string, "0.2.2")<br/>    cbcli_version = optional(string, "0.2.0")<br/>    signing_key = optional(string)<br/>  })</pre> | `null` | no |
 
 ## Outputs
