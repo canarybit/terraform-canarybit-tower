@@ -65,7 +65,7 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_az_region"></a> [az\_region](#input\_az\_region) | Azure Region with AMD SNP or Intel TDX hardware | `string` | n/a | yes |
+| <a name="input_az_region"></a> [az\_region](#input\_az\_region) | Azure Region. Defaults to the AZ Resource Group location. | `string` | `null` | no |
 | <a name="input_az_resource_group_name"></a> [az\_resource\_group\_name](#input\_az\_resource\_group\_name) | Azure Resource Group Name | `string` | n/a | yes |
 | <a name="input_cb_auth"></a> [cb\_auth](#input\_cb\_auth) | CanaryBit Authentication tokens | `string` | n/a | yes |
 | <a name="input_cvm_disk_size_gb"></a> [cvm\_disk\_size\_gb](#input\_cvm\_disk\_size\_gb) | CVM Disk size | `string` | `"30"` | no |
