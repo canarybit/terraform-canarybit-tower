@@ -62,4 +62,7 @@ runcmd:
   - udevadm trigger
   - su -c '/home/${USERNAME}/launch-cbclient.sh' - ${USERNAME}
 
-final_message: "==========   TOWER SETUP COMPLETED IN $UPTIME secs    =========="
+final_message: |
+  ==========   TOWER SETUP COMPLETED IN $UPTIME secs    ==========
+  The security of this environment has been verified by
+  CanaryBit Inspector Remote Attestation service.

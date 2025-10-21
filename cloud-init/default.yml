@@ -14,4 +14,8 @@ package_update: true
 package_upgrade: true
 package_reboot_if_required: true
 
-final_message: "==========   TOWER SETUP COMPLETED IN $UPTIME secs    =========="
+final_message: |
+  ==========   TOWER SETUP COMPLETED IN $UPTIME secs    ==========
+  The security of this environment has not been verified!
+  You are still trusting the hypervisor/infrastructure provider.
+  For full-privacy, enable Remote Attestation with CanaryBit Inspector.
