@@ -3,7 +3,7 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = ">= 5.5.0"
+      version = "6.20.0"
     }
   }
 }
@@ -14,22 +14,38 @@ provider "aws" {}
 //  Tower Arguments
 // =====================
 
-variable "cb_login" {
-  description = "Enter your CanaryBit Authentication token."
-  type = string
+variable "n_of_cvm" {
+  description = "Number of Confidential VMs to deploy"
+  type = number
+  default = 1
 }
 
-// =====================
-//  Confidential VM (CVM)
-// =====================
+variable "cb_username" {
+  description = "CanaryBit username"
+  type = string
+  sensitive = true
+}
 
-// AMD SEV-SNP
-module "cvm-amd-snp" {
-  source  = "canarybit/tower/canarybit//modules/aws"
-  cb_auth = var.cb_login
+variable "cb_password" {
+  description = "CanaryBit password"
+  type = string
+  sensitive = true
+}
+
+// ========================
+//  Confidential VM (CVM)
+// ========================
+
+module "confidential-vm" {
+  count = var.n_of_cvm
+
+  source = "canarybit/tower/canarybit//modules/aws"
   
-  // CVM Info
-  cvm_name = "demo-cvm-amd-snp"
+  cb_username = var.cb_username
+  cb_password = var.cb_password
+
+  // Confidential VM
+  cvm_name = "demo-cvm-${count.index}"
   cvm_ssh_enabled = true
   cvm_ssh_pubkey = "~/.ssh/id_rsa.pub"
   cvm_size = "c6a.xlarge"
@@ -40,10 +56,10 @@ module "cvm-amd-snp" {
   }
 }
 
-// =====================
+// ========================
 //  Print CVM info
-// =====================
-output "cvm-amd-snp" {
-  description = "Details of the running AMD SNP CVM instance(s)"
-  value = module.cvm-amd-snp.cvm-info
+// ========================
+
+output "cvm-info" {
+  value = module.confidential-vm.*.cvm-info
 }

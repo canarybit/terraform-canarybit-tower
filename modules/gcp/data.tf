@@ -1,7 +1,3 @@
-data "azurerm_resource_group" "default" {
-  name = var.az_resource_group_name
-}
-
 data "http" "cblogin" {
   url = "https://cognito-idp.eu-north-1.amazonaws.com/"
   method = "POST"

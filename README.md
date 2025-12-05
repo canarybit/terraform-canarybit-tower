@@ -8,10 +8,10 @@ governance of the resources defining your Trusted Execution Environment (TEE).
 It implements Infrastructure-as-Code (IaC) and SecDevOps best-practices to provide integrity and state of the art security to your workloads runtime.
 
 ## 🌟 Features
-- 🤹 **Confidential VM Orchestration**: Deploy confidential VMs on AMD SEV-SNP and Intel TDX platforms.
-- 🔬 **Hardware & Environment Verification**: Integrate with [CanaryBit Inspector](https://www.canarybit.eu/confidential-cloud-inspector/) to support Remote Attestation of deployed confidential VMs. (* Requires a CanaryBit account)
-- 🛠 **Extensible Configuration**: Configure your confidential VM using available configuration options or write your own.
-- ⚖️ **No lock-in**: Support for multiple hardware platforms and virtualisation software.
+- **Confidential VM Orchestration**: Deploy confidential VMs on AMD SEV-SNP and Intel TDX platforms.
+- **Hardware & Environment Verification**: Integrate with [CanaryBit Inspector](https://www.canarybit.eu/confidential-cloud-inspector/) to support Remote Attestation of deployed confidential VMs. Requires a CanaryBit account.
+- **Extensible Configuration**: Configure your confidential VM using available configuration options or write your own.
+- **No lock-in**: Support for multiple hardware platforms and virtualisation software.
 
 ## 🧩 Integrations
 - **Galaxy server**: Support for the [Galaxy project](https://github.com/galaxyproject) for data-intensive computation.
@@ -20,22 +20,23 @@ It implements Infrastructure-as-Code (IaC) and SecDevOps best-practices to provi
 ## 🛠️ How It Works
 1. **Clone** the repository to get the configurations.
 2. **Configure** the cloud-init script fine-tune your target setup.
-3. **Run** the Terraform scripts for your target Cloud Service Provider.  
+3. **Run** the code and deploy resources on your target infrastructure.
 4. **Need help?** Check the examples to help you get started.
 
 ## 🧱 Requirements
 - [Terraform](https://developer.hashicorp.com/terraform) or [OpenTofu](https://opentofu.org/docs/intro/install/) installed;
-- Credentials to access your target Cloud Service Provider;
-- A SSH RSA keypair to access Confidential VM instances.
+- Credentials to access your Infrastructure provider (either Public Cloud or On-prem);
+- A CanaryBit account. New user? [Create an account](https://canarybit-production.auth.eu-north-1.amazoncognito.com/login?client_id=54g4h9tpulnnkmhivgn5nipjki&redirect_uri=https://docs.confidentialcloud.io/&response_type=code&scope=email+openid+profile)
+   
 
 ## 📖 Documentation
 For setup instructions, API references, and usage examples, read the [technical documentation](https://docs.confidentialcloud.io/tower/).
 
 ## 🏀 Use Cases
-- 🤖 **Confidential AI**: Train models in a secure environment to protect intellectual property at all times.
-- ☁️ **Cloud infrastructure security**: Deploy workloads in memory-encrypted VMs to protect workloads from infrastructure operators.
-- 🏰 **On-prem infrastructure security**: Implement defence-in-depth to protect workloads from malicious insiders and motivated adversaries.
-- 💽 **High-performance computing (HPC)**: Protect security-sensitive HPC workloads 
+- **Confidential AI**: Train models in a secure environment to protect intellectual property at all times.
+- **Cloud infrastructure security**: Deploy workloads in memory-encrypted VMs to protect workloads from infrastructure operators.
+- **On-prem infrastructure security**: Implement defence-in-depth to protect workloads from malicious insiders and motivated adversaries.
+- **High-performance computing (HPC)**: Protect security-sensitive HPC workloads 
 [with minimum overhead](https://www.canarybit.eu/research-and-technological-leadership/).
 
 ## 💪 Contributing

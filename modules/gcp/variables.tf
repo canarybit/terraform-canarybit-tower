@@ -2,13 +2,20 @@
 // REQUIRED
 ///////////////////////
 
-variable "cb_auth" {
-  description = ""
+variable "cb_username" {
+  description = "CanaryBit username"
   type = string
+  sensitive = true
+}
+
+variable "cb_password" {
+  description = "CanaryBit password"
+  type = string
+  sensitive = true
 }
 
 variable "cvm_name" {
-  description = ""
+  description = "Confidential VM name"
   type = string
 }
 
@@ -28,46 +35,46 @@ variable "cvm_size" {
 }
 
 ///////////////////////
-// DEFAULT
+// DEFAULTS
 ///////////////////////
 
 variable "remote_attestation" {
-  description = "Enable CanaryBit Inspector Remote Attestation"
+  description = "Enable CanaryBit Remote Attestation"
   type = object({
     cc_environments = string
     cbinspector_url = optional(string, "https://inspector.confidentialcloud.io")
-    cbclient_version = optional(string, "0.2.2")
-    cbcli_version = optional(string, "0.2.0")
+    cbclient_version = optional(string, "0.2.4")
+    cbcli_version = optional(string, "0.2.5")
     signing_key = optional(string)
   })
   default = null
 }
 
 variable "cvm_os" {
-  description = ""
+  description = "URI of the OS image"
   type = string
   default = "ubuntu-2404-lts-amd64"
 }
 
 variable "cvm_username" {
-  description = ""
+  description = "CVM Username for SSH login"
   type = string
   default = "tower"
 }
 
 variable "cvm_disk_size_gb" {
-  description = ""
+  description = "CVM Disk size"
   type = string
   default = "0"
 }
 
 variable "cvm_ports_open" {
-  description = ""
+  description = "List of CVM open network ports"
   type = list(string)
   default = []
 }
 
 variable "cvm_ssh_enabled" {
-  description = ""
+  description = "Enable/Disable SSH login"
   default = null
 }

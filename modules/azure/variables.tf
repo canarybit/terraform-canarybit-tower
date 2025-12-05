@@ -2,9 +2,16 @@
 // REQUIRED
 ///////////////////////
 
-variable "cb_auth" {
-  description = "CanaryBit Authentication tokens"
+variable "cb_username" {
+  description = "CanaryBit username"
   type = string
+  sensitive = true
+}
+
+variable "cb_password" {
+  description = "CanaryBit password"
+  type = string
+  sensitive = true
 }
 
 variable "cvm_name" {
@@ -17,33 +24,6 @@ variable "cvm_ssh_pubkey" {
   type = string
 }
 
-variable "az_resource_group_name" {
-  description = "Azure Resource Group Name"
-  type = string
-}
-
-///////////////////////
-// DEFAULT
-///////////////////////
-
-variable "az_region" {
-  description = "Azure Region. Defaults to the AZ Resource Group location."
-  type = string
-  default = null
-}
-
-variable "remote_attestation" {
-  description = "Enable CanaryBit Inspector Remote Attestation"
-  type = object({
-    cc_environments = string
-    cbinspector_url = optional(string, "https://inspector.confidentialcloud.io")
-    cbclient_version = optional(string, "0.2.2")
-    cbcli_version = optional(string, "0.2.0")
-    signing_key = optional(string)
-  })
-  default = null
-}
-
 variable "cvm_size" {
   description = "Supported sizes are `Standard_DC*` or `Standard_EC*` series"
   type = string
@@ -52,6 +32,27 @@ variable "cvm_size" {
     condition = length(regexall("^Standard_[D,E]C+", var.cvm_size)) > 0
     error_message = "Valid values are Standard_DC* or Standard_EC* series"
   }
+}
+
+variable "az_resource_group_name" {
+  description = "Azure Resource Group Name"
+  type = string
+}
+
+///////////////////////
+// DEFAULTS
+///////////////////////
+
+variable "remote_attestation" {
+  description = "Enable CanaryBit Remote Attestation"
+  type = object({
+    cc_environments = string
+    cbinspector_url = optional(string, "https://inspector.confidentialcloud.io")
+    cbclient_version = optional(string, "0.2.4")
+    cbcli_version = optional(string, "0.2.5")
+    signing_key = optional(string)
+  })
+  default = null
 }
 
 variable "cvm_os" {
@@ -81,5 +82,11 @@ variable "cvm_ports_open" {
 variable "cvm_ssh_enabled" {
   description = "Enable/Disable SSH login"
   type = bool
+  default = null
+}
+
+variable "az_region" {
+  description = "Azure Region. Defaults to the AZ Resource Group location."
+  type = string
   default = null
 }

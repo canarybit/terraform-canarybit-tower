@@ -16,11 +16,14 @@ output "cvm-info" {
   EOF
 }
 
+/* 
 output "cloud-init" {
   description = "The cloud-init configuration of the running CVM instance(s)"
+  sensitive = true
   value = <<EOF
   
-  ${aws_instance.cvm.user_data}
+  ${aws_instance.cvm.user_data_base64}
 
   EOF
 }
+*/

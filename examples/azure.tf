@@ -3,7 +3,7 @@ terraform {
   required_providers {
     azurerm = {
       source = "hashicorp/azurerm"
-      version = ">= 4.0.1"
+      version = "4.0.1"
     }
   }
 }
@@ -13,67 +13,58 @@ provider "azurerm" {
 }
 
 // =====================
-//  Tower Arguments
+// Tower Arguments
 // =====================
 
-variable "cb_login" {
-  description = "CanaryBit Authentication tokens"
-  type = string
+variable "n_of_cvm" {
+  description = "Number of Confidential VMs to deploy"
+  type = number
+  default = 1
 }
 
-// =====================
-//  Confidential VM (CVM)
-// =====================
+variable "cb_username" {
+  description = "CanaryBit username"
+  type = string
+  sensitive = true
+}
 
-// AMD SEV-SNP
-module "cvm-amd-snp" {
-  source  = "canarybit/tower/canarybit//modules/azure"
-  cb_auth = var.cb_login
+variable "cb_password" {
+  description = "CanaryBit password"
+  type = string
+  sensitive = true
+}
+
+// ========================
+//  Confidential VM (CVM)
+// ========================
+
+module "confidential-vm" {
+  count = var.n_of_cvm
+
+  source = "canarybit/tower/canarybit//modules/azure"
+  
+  cb_username = var.cb_username
+  cb_password = var.cb_password
 
   // Azure Info
-  az_resource_group_name = "<MY_RESOURCE_GROUP>"
+  az_resource_group_name = "continuoustesting1932"
 
-  // CVM Info
-  cvm_name = "demo-cvm-amd-snp"
+  // Confidential VM
+  cvm_name = "demo-cvm-${count.index}"
   cvm_ssh_enabled = true
   cvm_ssh_pubkey = "~/.ssh/id_rsa.pub"
   cvm_size = "Standard_DC2as_v5"
-
+  
   // Remote Attestation
   remote_attestation = {
     cc_environments = "snp"
   }
 }
 
-// Intel TDX
-module "cvm-intel-tdx" {
-  source  = "canarybit/tower/canarybit//modules/azure"
-  cb_auth = var.cb_login
-
-  // Azure Info
-  az_resource_group_name = "<MY_RESOURCE_GROUP>"
-  
-  // CVM Info
-  cvm_name = "demo-cvm-intel-tdx"
-  cvm_ssh_enabled = true
-  cvm_ssh_pubkey = "~/.ssh/id_rsa.pub"
-  cvm_size = "Standard_DC2es_v6"
-
-  // Remote Attestation
-  remote_attestation = {
-    cc_environments = "tdx"
-  }
-}
-
-// =====================
+// ========================
 //  Print CVM info
-// =====================
-output "cvm-amd-snp" {
-  description = "Details of the running AMD SNP CVM instance(s)"
-  value = module.cvm-amd-snp.cvm-info
-}
+// ========================
 
-output "cvm-intel-tdx" {
-  description = "Details of the running Intel TDX CVM instance(s)"
-  value = module.cvm-intel-tdx.cvm-info
+output "cvm-amd-snp-info" {
+  value = module.cvm-amd-snp.*.cvm-info
 }

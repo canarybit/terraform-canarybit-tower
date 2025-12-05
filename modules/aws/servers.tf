@@ -11,21 +11,22 @@ resource "aws_instance" "cvm" {
   instance_type = var.cvm_size
 
   // Select the right cloud-init: with Remote Attestation support or default.
-  user_data = var.remote_attestation != null ? base64encode(templatefile("${path.module}/../../cloud-init/remote-attestation.yml",
+  user_data_base64 = var.remote_attestation != null ? base64gzip(templatefile("${path.module}/../../cloud-init/attested.yml",
       {
+        HOSTNAME           = var.cvm_name
         USERNAME           = var.cvm_username
         SSH_PUBKEY         = file(var.cvm_ssh_pubkey)
-        // CanaryBit Remote Attestation required info
-        CB_TOKENS          = var.cb_auth
+        // CanaryBit Remote Attestation
+        CB_TOKENS          = data.http.cblogin.*.response_body[0]
         CBINSPECTOR_URL    = var.remote_attestation.cbinspector_url
         CBCLIENT_V         = var.remote_attestation.cbclient_version
         CBCLI_V            = var.remote_attestation.cbcli_version
-        CC_ENVIRONMENTS    = var.remote_attestation.cc_environments
-        // Indent the signing key otherwise cloud-init will fail
+        ENVIRONMENTS       = var.remote_attestation.cc_environments
         SIGNING_KEY        = indent(6,tls_private_key.rsa-4096.private_key_pem_pkcs8)
       }
-    )) : base64encode(templatefile("${path.module}/../../cloud-init/default.yml",
+    )) : base64gzip(templatefile("${path.module}/../../cloud-init/default.yml",
       {
+        HOSTNAME           = var.cvm_name
         USERNAME           = var.cvm_username
         SSH_PUBKEY         = file(var.cvm_ssh_pubkey)
       }

@@ -1,4 +1,5 @@
 #cloud-config
+hostname: ${HOSTNAME}
 users:
   - default
   - name: ${USERNAME}
@@ -15,7 +16,8 @@ package_upgrade: true
 package_reboot_if_required: true
 
 final_message: |
-  ==========   TOWER SETUP COMPLETED IN $UPTIME secs    ==========
-  The security of this environment has not been verified!
-  You are still trusting the hypervisor/infrastructure provider.
-  For full-privacy, enable Remote Attestation with CanaryBit Inspector.
+  ==========   CANARYBIT TOWER SETUP COMPLETED IN $UPTIME secs    ==========
+  The security and privacy of this environment is not verified! 
+  You are still trusting the hypervisor/infrastructure provider. Use CanaryBit Remote Attestation service to unlock full privacy:
+  ${CBINSPECTOR_URL}
+  

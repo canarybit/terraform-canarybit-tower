@@ -4,7 +4,7 @@ terraform {
   required_providers {
     google = {
       source = "hashicorp/google"
-      version = ">= 6.8"
+      version = "7.12.0"
     }
   }
 }
@@ -15,42 +15,41 @@ provider "google" {}
 //  Tower Arguments
 // =====================
 
-variable "cb_login" {
-  description = "Enter your CanaryBit Authentication token."
+variable "n_of_cvm" {
+  description = "Number of Confidential VMs to deploy"
+  type = number
+  default = 1
+}
+
+variable "cb_username" {
+  description = "CanaryBit username"
   type = string
+  sensitive = true
+}
+
+variable "cb_password" {
+  description = "CanaryBit password"
+  type = string
+  sensitive = true
 }
 
 // =====================
 //  Confidential VM (CVM)
 // =====================
 
-// AMD SNP
-module "cvm-amd-snp" {
+module "confidential-vm" {
+  count = var.n_of_cvm
+
   source  = "canarybit/tower/canarybit//modules/gcp"
-  cb_auth = var.cb_login
-  
-  // CVM Info
-  cvm_name = "demo-cvm"
+
+  cb_username = var.cb_username
+  cb_password = var.cb_password
+
+  // Confidential VM
+  cvm_name = "demo-cvm-${count.index}"
   cvm_ssh_enabled = true
   cvm_ssh_pubkey = "~/.ssh/id_rsa.pub"
-  cvm_size = "n2d-standard-2"
-
-  // Remote Attestation
-  remote_attestation = {
-    cc_environments = "snp"
-  }
-}
-
-// Intel TDX
-module "cvm-intel-tdx" {
-  source  = "canarybit/tower/canarybit//modules/gcp"
-  cb_auth = var.cb_login
-  
-  // CVM Info
-  cvm_name = "demo-cvm"
-  cvm_ssh_enabled = true
-  cvm_ssh_pubkey = "~/.ssh/id_rsa.pub"
-  cvm_size = "c3-standard-4"
+  cvm_size = "c3-standard-4" // Intel TDX 
 
   // Remote Attestation
   remote_attestation = {
@@ -58,15 +57,10 @@ module "cvm-intel-tdx" {
   }
 }
 
-// =====================
+// ========================
 //  Print CVM info
-// =====================
-output "cvm-amd-snp" {
-  description = "Details of the running AMD SNP CVM instance(s)"
-  value = module.cvm-amd-snp.cvm-info
-}
+// ========================
 
-output "cvm-intel-tdx" {
-  description = "Details of the running Intel TDX CVM instance(s)"
-  value = module.cvm-intel-tdx.cvm-info
+output "cvm-info" {
+  value = module.confidential-vm.*.cvm-info
 }

@@ -17,21 +17,22 @@ resource "google_compute_instance" "cvm" {
 
   metadata = {
     // WARNING: it's user-data with "-" and not "_" as for other providers. No base64encode encoding.
-    user-data = var.remote_attestation != null ? templatefile("${path.module}/../../cloud-init/remote-attestation.yml",
+    user-data = var.remote_attestation != null ? templatefile("${path.module}/../../cloud-init/attested.yml",
         {
+          HOSTNAME           = var.cvm_name
           USERNAME           = var.cvm_username
           SSH_PUBKEY         = file(var.cvm_ssh_pubkey)
-          // CanaryBit Remote Attestation required info
-          CB_TOKENS          = var.cb_auth
+          // CanaryBit Remote Attestation
+          CB_TOKENS          = data.http.cblogin.*.response_body[0]
           CBINSPECTOR_URL    = var.remote_attestation.cbinspector_url
           CBCLIENT_V         = var.remote_attestation.cbclient_version
           CBCLI_V            = var.remote_attestation.cbcli_version
-          CC_ENVIRONMENTS    = var.remote_attestation.cc_environments
-          // Indent the signing key otherwise cloud-init will fail
+          ENVIRONMENTS       = var.remote_attestation.cc_environments
           SIGNING_KEY        = indent(6,tls_private_key.rsa-4096.private_key_pem_pkcs8)
         }
       ) : templatefile("${path.module}/../../cloud-init/default.yml",
         {
+          HOSTNAME           = var.cvm_name
           USERNAME           = var.cvm_username
           SSH_PUBKEY         = file(var.cvm_ssh_pubkey)
         }
