@@ -42,7 +42,7 @@ variable "remote_attestation" {
   description = "Enable CanaryBit Remote Attestation"
   type = object({
     cc_environments = string
-    cbinspector_url = optional(string, "https://inspector.confidentialcloud.io")
+    cbinspector_url = optional(string, "https://api.inspector.confidentialcloud.io")
     cbclient_version = optional(string, "0.2.4")
     cbcli_version = optional(string, "0.2.5")
     signing_key = optional(string)
