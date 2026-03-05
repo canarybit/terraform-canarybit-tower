@@ -16,12 +16,6 @@ provider "azurerm" {
 // Tower Arguments
 // =====================
 
-variable "n_of_cvm" {
-  description = "Number of Confidential VMs to deploy"
-  type = number
-  default = 1
-}
-
 variable "cb_username" {
   description = "CanaryBit username"
   type = string
@@ -34,17 +28,24 @@ variable "cb_password" {
   sensitive = true
 }
 
+variable "n_of_cvm" {
+  description = "Number of Confidential VMs to deploy"
+  type = number
+  default = 1
+}
+
 // ========================
 //  Confidential VM (CVM)
 // ========================
 
 module "confidential-vm" {
-  count = var.n_of_cvm
 
   source = "canarybit/tower/canarybit//modules/azure"
   
   cb_username = var.cb_username
   cb_password = var.cb_password
+
+  count = var.n_of_cvm
 
   // Azure Info
   az_resource_group_name = "continuoustesting1932"
@@ -57,7 +58,7 @@ module "confidential-vm" {
   
   // Remote Attestation
   remote_attestation = {
-    cc_environments = "snp"
+    environments = "snp"
   }
 }
 

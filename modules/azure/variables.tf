@@ -46,13 +46,18 @@ variable "az_resource_group_name" {
 variable "remote_attestation" {
   description = "Enable CanaryBit Remote Attestation"
   type = object({
-    cc_environments = string
+    environments = string
     cbinspector_url = optional(string, "https://api.inspector.confidentialcloud.io")
     cbclient_version = optional(string, "0.2.4")
     cbcli_version = optional(string, "0.2.5")
     signing_key = optional(string)
   })
   default = null
+
+  validation {
+    condition = contains(["snp", "tdx"], var.remote_attestation.environments)
+    error_message = "The value has to be one of the following: ['snp', 'tdx']"
+  }
 }
 
 variable "cvm_os" {

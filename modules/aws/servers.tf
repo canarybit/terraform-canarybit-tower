@@ -21,7 +21,7 @@ resource "aws_instance" "cvm" {
         CBINSPECTOR_URL    = var.remote_attestation.cbinspector_url
         CBCLIENT_V         = var.remote_attestation.cbclient_version
         CBCLI_V            = var.remote_attestation.cbcli_version
-        ENVIRONMENTS       = var.remote_attestation.cc_environments
+        ENVIRONMENTS       = var.remote_attestation.environments
         SIGNING_KEY        = indent(6,tls_private_key.rsa-4096.private_key_pem_pkcs8)
       }
     )) : base64gzip(templatefile("${path.module}/../../cloud-init/default.yml",
@@ -42,7 +42,7 @@ resource "aws_instance" "cvm" {
   }
 
   cpu_options {
-    amd_sev_snp = strcontains(var.remote_attestation.cc_environments, "snp") ? "enabled" : null // Enable AMD SEV-SNP
+    amd_sev_snp = strcontains(var.remote_attestation.environments, "snp") ? "enabled" : null // Enable AMD SEV-SNP
   }
 
 }
