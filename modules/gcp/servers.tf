@@ -1,6 +1,7 @@
 resource "google_compute_instance" "cvm" {
   name = var.cvm_name
   machine_type = var.cvm_size
+  labels = { canarybit = "tower" }
 
   boot_disk {
     initialize_params {

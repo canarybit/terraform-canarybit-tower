@@ -3,13 +3,10 @@
 ///////////////////////
 
 resource "aws_instance" "cvm" {
-  tags = {
-    Name = var.cvm_name
-  }
-
   ami = var.cvm_os
   instance_type = var.cvm_size
-
+  tags = { Name = var.cvm_name, canarybit = "tower" }
+  
   // Select the right cloud-init: with Remote Attestation support or default.
   user_data_base64 = var.remote_attestation != null ? base64gzip(templatefile("${path.module}/../../cloud-init/attested.yml",
       {

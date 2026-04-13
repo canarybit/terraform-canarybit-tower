@@ -43,7 +43,7 @@ variable "remote_attestation" {
   type = object({
     environments = string
     cbinspector_url = optional(string, "https://api.inspector.confidentialcloud.io")
-    cbclient_version = optional(string, "0.2.4")
+    cbclient_version = optional(string, "0.3.0")
     cbcli_version = optional(string, "0.2.5")
     signing_key = optional(string)
   })

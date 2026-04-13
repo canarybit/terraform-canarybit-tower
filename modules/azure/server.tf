@@ -3,7 +3,8 @@ resource "azurerm_linux_virtual_machine" "cvm" {
   resource_group_name = data.azurerm_resource_group.default.name
   location = local.az_region
   size = var.cvm_size
-    
+  tags = { canarybit = "tower" }
+
   // Select the right cloud-init: default or with Remote Attestation support.
   user_data = var.remote_attestation != null ? base64encode(templatefile("${path.module}/../../cloud-init/attested.yml",
       {
