@@ -66,6 +66,7 @@ No modules.
 |------|-------------|------|---------|:--------:|
 | <a name="input_cb_password"></a> [cb\_password](#input\_cb\_password) | CanaryBit password | `string` | n/a | yes |
 | <a name="input_cb_username"></a> [cb\_username](#input\_cb\_username) | CanaryBit username | `string` | n/a | yes |
+| <a name="input_cvm_annotations"></a> [cvm\_annotations](#input\_cvm\_annotations) | Custom Annotations in format "<Namespace>" = "<Key>=<Value>" | `map` | `{}` | no |
 | <a name="input_cvm_disk_size_gb"></a> [cvm\_disk\_size\_gb](#input\_cvm\_disk\_size\_gb) | CVM Disk size | `string` | `"0"` | no |
 | <a name="input_cvm_name"></a> [cvm\_name](#input\_cvm\_name) | Confidential VM name | `string` | n/a | yes |
 | <a name="input_cvm_os"></a> [cvm\_os](#input\_cvm\_os) | URI of the OS image | `string` | `"ubuntu-2404-lts-amd64"` | no |
