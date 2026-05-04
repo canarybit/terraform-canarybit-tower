@@ -43,6 +43,12 @@ variable "az_resource_group_name" {
 // DEFAULTS
 ///////////////////////
 
+variable "az_region" {
+  description = "Azure Region. Defaults to the AZ Resource Group location."
+  type = string
+  default = null
+}
+
 variable "remote_attestation" {
   description = "Enable CanaryBit Remote Attestation"
   type = object({
@@ -90,8 +96,8 @@ variable "cvm_ssh_enabled" {
   default = null
 }
 
-variable "az_region" {
-  description = "Azure Region. Defaults to the AZ Resource Group location."
-  type = string
-  default = null
+variable "cvm_annotations" {
+  description = "Custom annotations in \"(<Namespace>:)<Key> \"=\" <Value>\" format"
+  type = map
+  default = {}
 }

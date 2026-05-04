@@ -88,3 +88,9 @@ variable "cvm_ssh_enabled" {
   type = bool
   default = null
 }
+
+variable "cvm_annotations" {
+  description = "Custom Annotations in format \"<Namespace>\" = \"<Key>=<Value>\""
+  type = map
+  default = {}
+}

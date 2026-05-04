@@ -5,21 +5,25 @@
 resource "aws_instance" "cvm" {
   ami = var.cvm_os
   instance_type = var.cvm_size
-  tags = { Name = var.cvm_name, canarybit = "tower" }
+  tags = merge(
+    { Name = var.cvm_name },
+    local.annotations
+  )
   
   // Select the right cloud-init: with Remote Attestation support or default.
   user_data_base64 = var.remote_attestation != null ? base64gzip(templatefile("${path.module}/../../cloud-init/attested.yml",
       {
-        HOSTNAME           = var.cvm_name
-        USERNAME           = var.cvm_username
-        SSH_PUBKEY         = file(var.cvm_ssh_pubkey)
+        HOSTNAME                = var.cvm_name
+        USERNAME                = var.cvm_username
+        SSH_PUBKEY              = file(var.cvm_ssh_pubkey)
         // CanaryBit Remote Attestation
-        CB_TOKENS          = data.http.cblogin.*.response_body[0]
-        CBINSPECTOR_URL    = var.remote_attestation.cbinspector_url
-        CBCLIENT_V         = var.remote_attestation.cbclient_version
-        CBCLI_V            = var.remote_attestation.cbcli_version
-        ENVIRONMENTS       = var.remote_attestation.environments
-        SIGNING_KEY        = indent(6,tls_private_key.rsa-4096.private_key_pem_pkcs8)
+        CB_TOKENS               = data.http.cblogin.*.response_body[0]
+        CBINSPECTOR_URL         = var.remote_attestation.cbinspector_url
+        CBCLIENT_V              = var.remote_attestation.cbclient_version
+        CBCLIENT_ANNOTATIONS    = replace(join(",", formatlist("%s=%s", keys(local.annotations), values(local.annotations))),":","/")
+        CBCLI_V                 = var.remote_attestation.cbcli_version
+        ENVIRONMENTS            = var.remote_attestation.environments
+        SIGNING_KEY             = indent(6,tls_private_key.rsa-4096.private_key_pem_pkcs8)
       }
     )) : base64gzip(templatefile("${path.module}/../../cloud-init/default.yml",
       {

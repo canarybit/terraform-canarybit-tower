@@ -83,3 +83,9 @@ variable "cvm_ssh_enabled" {
   description = "Enable/Disable SSH login"
   default = null
 }
+
+variable "cvm_annotations" {
+  description = "Custom Annotations in format \"<Namespace>\" = \"<Key>=<Value>\""
+  type = map
+  default = {}
+}

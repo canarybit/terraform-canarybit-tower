@@ -1,7 +1,7 @@
 resource "google_compute_instance" "cvm" {
   name = var.cvm_name
   machine_type = var.cvm_size
-  labels = { canarybit = "tower" }
+  labels = local.annotations
 
   boot_disk {
     initialize_params {
@@ -20,16 +20,17 @@ resource "google_compute_instance" "cvm" {
     // WARNING: it's user-data with "-" and not "_" as for other providers. No base64encode encoding.
     user-data = var.remote_attestation != null ? templatefile("${path.module}/../../cloud-init/attested.yml",
         {
-          HOSTNAME           = var.cvm_name
-          USERNAME           = var.cvm_username
-          SSH_PUBKEY         = file(var.cvm_ssh_pubkey)
+          HOSTNAME                = var.cvm_name
+          USERNAME                = var.cvm_username
+          SSH_PUBKEY              = file(var.cvm_ssh_pubkey)
           // CanaryBit Remote Attestation
-          CB_TOKENS          = data.http.cblogin.*.response_body[0]
-          CBINSPECTOR_URL    = var.remote_attestation.cbinspector_url
-          CBCLIENT_V         = var.remote_attestation.cbclient_version
-          CBCLI_V            = var.remote_attestation.cbcli_version
-          ENVIRONMENTS       = var.remote_attestation.environments
-          SIGNING_KEY        = indent(6,tls_private_key.rsa-4096.private_key_pem_pkcs8)
+          CB_TOKENS               = data.http.cblogin.*.response_body[0]
+          CBINSPECTOR_URL         = var.remote_attestation.cbinspector_url
+          CBCLIENT_V              = var.remote_attestation.cbclient_version
+          CBCLIENT_ANNOTATIONS    = replace(join(",", formatlist("%s=%s", keys(local.annotations), values(local.annotations))),"-","/")
+          CBCLI_V                 = var.remote_attestation.cbcli_version
+          ENVIRONMENTS            = var.remote_attestation.environments
+          SIGNING_KEY             = indent(6,tls_private_key.rsa-4096.private_key_pem_pkcs8)
         }
       ) : templatefile("${path.module}/../../cloud-init/default.yml",
         {

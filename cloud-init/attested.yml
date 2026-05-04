@@ -46,6 +46,7 @@ write_files:
       Environment="CBCLIENT_LOG_LEVEL=info"
       Environment="CBCLIENT_ENVIRONMENTS=${ENVIRONMENTS}"
       Environment="CBCLIENT_INSPECTOR_URL=${CBINSPECTOR_URL}"
+      Environment="CBCLIENT_ANNOTATIONS=${CBCLIENT_ANNOTATIONS}"
       Type=oneshot
       ExecStart=/bin/bash -c '/usr/local/bin/cbclient attestation --token $$(cb login inspector) --key /etc/canarybit/signing-key.pem'
       SuccessExitStatus=0
