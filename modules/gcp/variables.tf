@@ -46,6 +46,8 @@ variable "remote_attestation" {
     cbclient_version = optional(string, "0.3.0")
     cbcli_version = optional(string, "0.2.5")
     signing_key = optional(string)
+    custom_policy_file = optional(string)
+    frequency = optional(string, "daily")
   })
   default = null
 

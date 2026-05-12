@@ -59,6 +59,8 @@ module "confidential-vm" {
   // Remote Attestation
   remote_attestation = {
     environments = "snp"
+    frequency = "minutely"
+    custom_policy_file = "./my-policy.rego"
   }
 }
 

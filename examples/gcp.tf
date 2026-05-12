@@ -55,6 +55,8 @@ module "confidential-vm" {
   // Remote Attestation
   remote_attestation = {
     environments = "tdx"
+    frequency = "minutely"
+    custom_policy_file = "./my-policy.rego"
   }
 }
 

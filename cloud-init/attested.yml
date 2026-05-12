@@ -33,6 +33,13 @@ write_files:
     content: |
       ${SIGNING_KEY}
 
+  # Custom policu for the current cVM instance (optional)
+  - path: /etc/canarybit/custom-policy.rego
+    defer: true
+    permissions: '0600'
+    content: |
+      ${CUSTOM_POLICY}
+
   # Configure cbclient as a System service
   - path: /etc/systemd/system/cbclient.service
     defer: true
@@ -40,7 +47,7 @@ write_files:
     content: |
       [Unit]
       Description=CanaryBit Remote Attestation
-
+      
       [Service]
       EnvironmentFile=/etc/canarybit/tokens
       Environment="CBCLIENT_LOG_LEVEL=info"
@@ -48,27 +55,22 @@ write_files:
       Environment="CBCLIENT_INSPECTOR_URL=${CBINSPECTOR_URL}"
       Environment="CBCLIENT_ANNOTATIONS=${CBCLIENT_ANNOTATIONS}"
       Type=oneshot
-      ExecStart=/bin/bash -c '/usr/local/bin/cbclient attestation --token $$(cb login inspector) --key /etc/canarybit/signing-key.pem'
-      SuccessExitStatus=0
+      ExecStart=/bin/bash -c '/usr/local/bin/cbclient attestation --token $$(cb login inspector) --key /etc/canarybit/signing-key.pem ${CUSTOM_POLICY_OPT}'
 
-      [Install]
-      WantedBy=multi-user.target
-
-  # cbclient.service - Call failure.service if attestation fails
-  - path: /etc/systemd/system/cbclient.service.d/failure.conf
-    defer: true
-    permissions: '0600'
-    content: |      
-      [Unit]
-      OnFailure=failure.service
-
-  # Disable cbclient.service on failure
-  - path: /etc/systemd/system/failure.service
+  # Set a frequency for cbclient.service
+  - path: /etc/systemd/system/cbclient.timer
     defer: true
     permissions: '0600'
     content: |
-      [Service]
-      ExecStart=systemctl disable cbclient.service
+      [Unit]
+      Description=CanaryBit Remote Attestation Timer
+      
+      [Timer]
+      OnCalendar=${FREQUENCY}
+      Persistent=true
+      
+      [Install]
+      WantedBy=timers.target
 
   # Initialize the cbclient systemd service
   - path: /etc/canarybit/launch-cbclient
@@ -83,8 +85,9 @@ write_files:
       # Download the CanaryBit Inspector agent (cbclient) into /usr/local/bin
       CB_TOKENS='${CB_TOKENS}' cb download cbclient ${CBCLIENT_V}/cbclient; chmod +x cbclient; mv cbclient /usr/local/bin/cbclient
 
-      # Start cbclient as System service
-      systemctl enable cbclient.service; systemctl start cbclient.service
+      # Start cbclient as System service once and then a defined frequency
+      systemctl start cbclient.service
+      systemctl enable --now cbclient.timer
 
 runcmd:
   # Launch cbclient as systemd service
